@@ -31,21 +31,29 @@ var mime_types = {
     ".ico": "image/x-icon",
     ".webmanifest": "application/json"
 };
-server.get("/static/*", function (req, res) {
-    console.log(req.uri);
-    var uri = req.uri;
+var Langs = {};
+var Paths = {
+    "/": {}
+};
+server.get("/*", function (req, res) {
+    var params = "params" in req ? req.params : {};
     try {
-        var filetype = uri.substring(uri.lastIndexOf("."));
-        var file = (0, fs_1.readFileSync)("static/" + uri);
-        var type = filetype in mime_types ? mime_types[filetype] : "application/octet-stream";
-        res.type(type);
-        res.header("Content-Type", type).send(file);
+        var fulluri = params["*"], parts = fulluri.split("/");
+        if (parts[0] == "static") {
+            var ext = fulluri.substring(fulluri.lastIndexOf(".")), file = (0, fs_1.readFileSync)(fulluri), type = ext in mime_types ? mime_types[ext] : "application/octet-stream";
+            res.header("Content-Type", type).send(file);
+        }
+        else if (parts[0] == "templelements") {
+            res.header("Content-Type", "text/html").send((0, fs_1.readFileSync)("Admin.html"));
+        }
+        else {
+            var lang = parts[0] in Langs ? parts[0] : "en", step = 1, steps = parts.length, tree = Paths;
+            for (var part = void 0; step < steps; step++)
+                tree = parts[step];
+        }
     }
-    catch (_a) {
-        res.callNotFound();
-    }
-});
-server.get("/", function (req, res) {
+    catch (_a) { }
+    res.callNotFound();
 });
 // function ReadDirRec( base: string, dir: string ) {
 // 	const files: Array<string> = [];

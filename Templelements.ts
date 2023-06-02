@@ -85,23 +85,38 @@ const mime_types: { [ ext: string ]: string } = {
 	".webmanifest": "application/json"
 };
 
-server.get( "/static/*", ( req, res ) => {
-	console.log(req.url)
-	let uri = req.url
-	try {
-		const filetype = uri.substring( uri.lastIndexOf( "." ) );
-		const file = readFileSync( "static/" + uri );
-		const type = filetype in mime_types ? mime_types[ filetype ] : "application/octet-stream";
-		res.type( type );
-		res.header( "Content-Type", type ).send( file );
-	} catch {
-		res.callNotFound();
+var Langs = {};
+
+const Paths = {
+	"/": {
+
 	}
-} );
+}
 
-server.get( "/", ( req, res ) => {
+server.get( "/*", ( req, res ) => {
+	let params = "params" in req ? req.params as object : {}
+	try {
+		let fulluri = params[ "*" ] as string,
+			parts = fulluri.split( "/" );
+		if ( parts[0] == "static" ) {
+			let ext = fulluri.substring( fulluri.lastIndexOf( "." ) ),
+				file = readFileSync( fulluri ),
+				type = ext in mime_types ? mime_types[ ext ] : "application/octet-stream";
+			res.header( "Content-Type", type ).send( file );
+		} else if ( parts[0] == "templelements") {
+			res.header( "Content-Type", "text/html" ).send( readFileSync( "Admin.html" ) );
+		} else {
+			let lang = parts[0] in Langs ? parts[0] : "en",
+				step = 1,
+				steps = parts.length,
+				tree: any = Paths;
+			for ( let part ; step < steps; step++ )
+				tree = parts[ step ];
 
-})
+		}
+	} catch {}
+	res.callNotFound();
+});
 
 
 // function ReadDirRec( base: string, dir: string ) {

@@ -1,0 +1,27 @@
+@import "../../Settings.scss";
+@import "../../Elements/Basics.scss";
+@import "../../Elements/Columns.scss";
+@import "../../Elements/Paddings.scss";
+
+@import "../../Layouts/StaticColumnsWithPd.scss";
+@import "../../Layouts/Header.scss";
+@import "../../Layouts/Nav.scss";
+@import "../../Layouts/Main.scss";
+@import "../../Layouts/Footer.scss";
+
+
+@import "../../Palettes/p-1.scss";
+@import "../../Fonts/f-alexandria.scss";
+@import "../../Fonts/f-black-ops-one.scss";
+
+.HeroBanner {
+	font-family: Source Sans Pro, Helvetica Neue, sans-serif;
+}
+
+:root {
+	@include p-1;
+}
+body {
+	@include f-alexandria;
+}
+@import "../../Contexts/HeroBanner/HeroBanner.scss";

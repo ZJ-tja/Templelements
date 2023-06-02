@@ -1,4 +1,4 @@
-import fastify from "fastify-server";
+import fastify from "fastify";
 import fastifyIO from "fastify-socket.io";
 import { readFileSync } from "fs";
 
@@ -60,7 +60,6 @@ Z96ky2Tpgli5UylFicaQ3j6nzRcd9C4y4klT65lpBFZ4vKCjHYQ4Z6hhPD3GG7IV
 	}
 } );
 
-
 server.register( fastifyIO, {
 	transports: [ 'websocket' ],
 	serveClient: false,
@@ -87,8 +86,8 @@ const mime_types: { [ ext: string ]: string } = {
 };
 
 server.get( "/static/*", ( req, res ) => {
-	console.log(req.uri)
-	let uri = req.uri
+	console.log(req.url)
+	let uri = req.url
 	try {
 		const filetype = uri.substring( uri.lastIndexOf( "." ) );
 		const file = readFileSync( "static/" + uri );

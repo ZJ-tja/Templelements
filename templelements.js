@@ -38,20 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var fastify_1 = require("fastify");
 var fastify_socket_io_1 = require("fastify-socket.io");
-var pg_1 = require("pg");
 var fs_1 = require("fs");
-var pg = new pg_1.Client(process.env.PORT ? {
-    host: 'dpg-chsqmaik728ud3kthlm0-a',
-    port: 5334,
-    database: 'db_templelements',
-    user: 'templelements',
-    password: 'MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT',
-} : {
-    host: '127.0.0.1',
-    port: 5334,
-    database: 'templelements',
-    user: 'ZetJot',
-    password: '1234',
+var pg_1 = require("pg");
+var pg = new pg_1.Client({
+    user: "postgres",
+    database: "templelements",
+    password: "1234"
 });
 var server = (0, fastify_1.default)({
     https: process.env.PORT ? null : {
@@ -108,36 +100,15 @@ server.get("/*", function (req, res) {
     catch (_a) { }
     res.callNotFound();
 });
-// function ReadDirRec( base: string, dir: string ) {
-// 	const files: Array<string> = [];
-// 	for ( const file of readdirSync( base + dir ) ) {
-// 		const filepath = dir + "/" + file;
-// 		if ( file.includes( ".compiler" ) )
-// 			files.push( filepath )
-// 		else if ( lstatSync( base + filepath ).isDirectory() ) {
-// 			let subfile: string;
-// 			for ( subfile of ReadDirRec( base, filepath ) )
-// 				files.push( subfile );
-// 		}
-// 	}
-// 	return files;
-// }
-function OnStart(sockets, db) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            return [2 /*return*/];
-        });
-    });
-}
 server.ready().then(function () { return __awaiter(void 0, void 0, void 0, function () {
-    var Account, Notifications;
+    var Account;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, pg.connect()];
             case 1:
                 _a.sent();
                 Account = require("./server_modules/account.js")(pg, server.io);
-                Notifications = require("./server_modules/notifications.js");
+                // const Notifications = require( "./server_modules/notifications.js" );
                 server.io.on("connection", function (client) {
                     var account = {
                         id: 0,

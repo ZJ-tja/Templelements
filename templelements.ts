@@ -1,21 +1,12 @@
 import fastify from "fastify";
 import fastifyIO from "fastify-socket.io";
-import { Client } from 'pg'
 import { readFileSync } from "fs";
-
-const pg = new Client( process.env.PORT ? {
-	host: 'dpg-chsqmaik728ud3kthlm0-a',
-	port: 5334,
-	database: 'db_templelements',
-	user: 'templelements',
-	password: 'MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT',
-} : {
-	host: '127.0.0.1',
-	port: 5334,
-	database: 'templelements',
-	user: 'ZetJot',
-	password: '1234',
-} );
+import { Client } from 'pg'
+const pg = new Client({
+	user: "postgres",
+	database: "templelements",
+	password: "1234"
+});
 
 const server = fastify( {
 	https: process.env.PORT ? null : {
@@ -135,30 +126,10 @@ server.get( "/*", ( req, res ) => {
 });
 
 
-// function ReadDirRec( base: string, dir: string ) {
-// 	const files: Array<string> = [];
-// 	for ( const file of readdirSync( base + dir ) ) {
-// 		const filepath = dir + "/" + file;
-// 		if ( file.includes( ".compiler" ) )
-// 			files.push( filepath )
-// 		else if ( lstatSync( base + filepath ).isDirectory() ) {
-// 			let subfile: string;
-// 			for ( subfile of ReadDirRec( base, filepath ) )
-// 				files.push( subfile );
-// 		}
-
-// 	}
-// 	return files;
-// }
-async function OnStart( sockets, db ) {
-	
-
-}
-
 server.ready().then( async () => {
 	await pg.connect();
 	const Account = require( "./server_modules/account.js" )( pg, server.io );
-	const Notifications = require( "./server_modules/notifications.js" );
+	// const Notifications = require( "./server_modules/notifications.js" );
 	server.io.on( "connection", ( client: any ) => {
 		let account = {
 			id: 0,

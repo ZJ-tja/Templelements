@@ -115,6 +115,8 @@ server.get( "/*", ( req, res ) => {
 		} else if ( parts[0] == "templelements") {
 			res.header( "Content-Type", "text/html" ).send( readFileSync( "admin.html" ) );
 		} else {
+			res.header( "Content-Type", "text/html" ).send( readFileSync( "admin.html" ) );
+			return;
 			let lang = parts[0] in Langs ? parts[0] : "en",
 				step = 1,
 				steps = parts.length,

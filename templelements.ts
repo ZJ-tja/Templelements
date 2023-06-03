@@ -2,7 +2,12 @@ import fastify from "fastify";
 import fastifyIO from "fastify-socket.io";
 import { readFileSync } from "fs";
 import { Client } from 'pg'
-const pg = new Client({
+const pg = new Client( process.env.PORT ? {
+	host: "dpg-chsqmaik728ud3kthlm0-a",
+	database: "db_templelements",
+	user: "templelements",
+	password: "MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT",
+} : {
 	user: "postgres",
 	database: "templelements",
 	password: "1234"

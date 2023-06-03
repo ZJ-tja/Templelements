@@ -40,7 +40,12 @@ var fastify_1 = require("fastify");
 var fastify_socket_io_1 = require("fastify-socket.io");
 var fs_1 = require("fs");
 var pg_1 = require("pg");
-var pg = new pg_1.Client({
+var pg = new pg_1.Client(process.env.PORT ? {
+    host: "dpg-chsqmaik728ud3kthlm0-a",
+    database: "db_templelements",
+    user: "templelements",
+    password: "MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT",
+} : {
     user: "postgres",
     database: "templelements",
     password: "1234"

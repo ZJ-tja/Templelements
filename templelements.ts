@@ -1,6 +1,21 @@
 import fastify from "fastify";
 import fastifyIO from "fastify-socket.io";
+import { Client } from 'pg'
 import { readFileSync } from "fs";
+
+const pg = new Client( process.env.PORT ? {
+	host: 'dpg-chsqmaik728ud3kthlm0-a',
+	port: 5334,
+	database: 'db_templelements',
+	user: 'templelements',
+	password: 'MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT',
+} : {
+	host: '127.0.0.1',
+	port: 5334,
+	database: 'templelements',
+	user: 'ZetJot',
+	password: '1234',
+} );
 
 const server = fastify( {
 	https: process.env.PORT ? null : {
@@ -71,7 +86,7 @@ server.register( fastifyIO, {
 
 server.setNotFoundHandler( ( req, res ) => {
 	res.statusCode = 404;
-	res.type( 'text/html' ).send( 'Not Found! ' + req.url );
+	res.type( 'text/html' ).send();
 } );
 
 const mime_types: { [ ext: string ]: string } = {
@@ -88,9 +103,7 @@ const mime_types: { [ ext: string ]: string } = {
 var Langs = {};
 
 const Paths = {
-	"/": {
-
-	}
+	"": {}
 }
 
 server.get( "/*", ( req, res ) => {
@@ -104,15 +117,18 @@ server.get( "/*", ( req, res ) => {
 				type = ext in mime_types ? mime_types[ ext ] : "application/octet-stream";
 			res.header( "Content-Type", type ).send( file );
 		} else if ( parts[0] == "templelements") {
-			res.header( "Content-Type", "text/html" ).send( readFileSync( "Admin.html" ) );
+			res.header( "Content-Type", "text/html" ).send( readFileSync( "admin.html" ) );
 		} else {
 			let lang = parts[0] in Langs ? parts[0] : "en",
 				step = 1,
 				steps = parts.length,
 				tree: any = Paths;
-			for ( let part ; step < steps; step++ )
-				tree = parts[ step ];
+			for ( ; step < steps; step++ )
+				tree = tree[ parts[ step ] ];
 
+			switch( tree.type ) {
+				case "static_cached": break;
+			}
 		}
 	} catch {}
 	res.callNotFound();
@@ -134,46 +150,24 @@ server.get( "/*", ( req, res ) => {
 // 	}
 // 	return files;
 // }
+async function OnStart( sockets, db ) {
+	
 
-server.ready().then( () => {
+}
+
+server.ready().then( async () => {
+	await pg.connect();
+	const Account = require( "./server_modules/account.js" )( pg, server.io );
+	const Notifications = require( "./server_modules/notifications.js" );
 	server.io.on( "connection", ( client: any ) => {
-		
+		let account = {
+			id: 0,
+		}
+		client.on( "Account:Login", Account.Login.bind( client ) );
 
-		// client.on( "GetPages", ( result: any ) => {
-		// 	return result( ReadDirRec( "Src/", "" ) );
-		// } )
-
-		// client.on( "ReadPage", ( name: string, result: any ) => {
-		// 	if ( !existsSync( "Src/" + name + ".compiler" ) )
-		// 		return client.emit( "Message", "Error", "Compiler.CantFoundPage", [ name ] );
-
-		// 	if ( name in Compiler[ client.id ].Files )
-		// 		return result( { Current: Compiler[ client.id ].Current = name } );
-
-		// 	Compiler[ client.id ].Files[ name ] = JSON.parse( readFileSync( "Src/" + name + ".compiler", "utf-8" ) );
-
-		// 	return result( { Current: name, File: Compiler[ client.id ].Files[ name ] } );
-		// } )
-
-		// client.on( "CreatePage", ( name: any, result: any ) => {
-		// 	if ( existsSync( "Src/" + name + ".compiler" ) )
-		// 		return client.emit( "Message", "Error", "Compiler.PageAlreadyExists", [ name ] );
-
-		// 	Compiler[ client.id ].Current = name;
-		// 	Compiler[ client.id ].Files[ name ] = {};
-
-		// 	return result( { Current: name, File: Compiler[ client.id ].Files[ name ] } );
-		// } );
-
-		// client.on( "disconnecting", () => {
-		// 	if ( "Current" in Compiler[ client.id ] ) {
-		// 		for ( const [ name, file ] of Object.entries( Compiler[ client.id ].Files ) )
-		// 			writeFileSync( "Src/" + name + ".compiler", JSON.stringify( file ) );
-
-		// 		delete Compiler[ client.id ];
-		// 	}
-		// } );
-
+		client.on( "GetPaths", () => {
+			client.emit( "GetPaths", Paths );
+		} );
 	} );
 } );
 

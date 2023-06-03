@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#F5F5DC" />
+	<meta name="description" content="Admin::Templelements">
+	<title>Templelements</title>
+
+	<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+	<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="/static/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+	<link rel="manifest" href="/static/site.webmanifest">
+
+	<link rel="stylesheet" href="/static/admin/index.css">
+	<script src="/static/socket.io.min.js"></script>
+</head>
+<body>
+<div id="Templelements">
+	<header>
+		<a href="/templelements" title="homepage"><img height="64px" src="/static/templelements.svg" alt="Templelements"></a>
+		<span class="burger">
+			<input id="NavBurger" onclick="libs.Nav()" type="checkbox" aria-label="menu">
+			<label for="NavBurger">
+				<span></span>
+				<span></span>
+				<span></span>
+				<span>Menu</span>
+			</label>
+		</span>
+		<nav>
+			<menu>
+				<li><a href="javascript:window.Paths()">Paths</a></li>
+			</menu>
+		</nav>
+		<span>
+			<span class="account">
+				<input type="checkbox" id="Account">
+				<label for="Account" title="Account">
+					<img height="48px" src="/static/account.svg" alt="Account">
+				</label>
+			</span>
+		</span>
+	</header>
+	<main>
+		<h1>Templelements</h1>
+	</main>
+	<footer>
+		<span id="CurrentYear">2023</span>
+		<script type="text/javascript">
+			( function() {
+				let eCurrentYear;
+				if ( ( eCurrentYear = document.getElementById( "CurrentYear" ) ) )
+					eCurrentYear.innerHTML = new Date().getFullYear().toString();
+			}() );
+		</script>
+		&copy;
+		<a href="https://zetjot.pl">ZetJot</a>
+	</footer>
+	<script src="/static/admin/index.js"></script>
+</body>
+</html>

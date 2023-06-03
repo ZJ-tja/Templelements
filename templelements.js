@@ -94,6 +94,8 @@ server.get("/*", function (req, res) {
             res.header("Content-Type", "text/html").send((0, fs_1.readFileSync)("admin.html"));
         }
         else {
+            res.header("Content-Type", "text/html").send((0, fs_1.readFileSync)("admin.html"));
+            return;
             var lang = parts[0] in Langs ? parts[0] : "en", step = 1, steps = parts.length, tree = Paths;
             for (; step < steps; step++)
                 tree = tree[parts[step]];

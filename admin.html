@@ -19,47 +19,196 @@
 	<script src="/static/socket.io.min.js"></script>
 </head>
 <body>
-<div id="Templelements">
 	<header>
-		<a href="/templelements" title="homepage"><img height="64px" src="/static/templelements.svg" alt="Templelements"></a>
-		<span class="burger">
-			<input id="NavBurger" onclick="libs.Nav()" type="checkbox" aria-label="menu">
-			<label for="NavBurger">
-				<span></span>
-				<span></span>
-				<span></span>
-				<span>Menu</span>
-			</label>
-		</span>
+		<a href="/templelements" title="homepage"><img height="48px" src="/static/templelements.svg" alt="Templelements"></a>
 		<nav>
 			<menu>
 				<li><a href="javascript:window.Paths()">Paths</a></li>
 			</menu>
 		</nav>
 		<span>
+			<span class="burger">
+				<input id="NavBurger" onclick="libs.Nav()" type="checkbox" aria-label="menu">
+				<label for="NavBurger">
+					<div></div>
+					<div></div>
+					<div></div>
+					<div>Menu</div>
+				</label>
+			</span>
 			<span class="account">
 				<input type="checkbox" id="Account">
 				<label for="Account" title="Account">
-					<img height="48px" src="/static/account.svg" alt="Account">
+					<img height="40px" src="/static/account.svg" alt="Account">
 				</label>
 			</span>
 		</span>
 	</header>
 	<main>
 		<h1>Templelements</h1>
+		<div id="Examples">
+			<div id="Schemes" onclick="example_scheme(event)">
+				<h2>Schemes</h2>
+				<button>scheme-1</button>
+				<button>scheme-2</button>
+			</div>
+			<div id="Forms" onclick="example_form(event)">
+				<h2>Forms</h2>
+				<button>form-1</button>
+				<br>
+				<form class="tabs">
+					<input type="radio" name="FormType" id="FormTypeInline" checked>
+					<input type="radio" name="FormType" id="FormTypeBlock">
+					<input type="radio" name="FormType" id="FormTypeFieldset">
+					<label for="FormTypeInline">Inline</label>
+					<label for="FormTypeBlock">Block</label>
+					<label for="FormTypeFieldset">Fieldset</label>
+					<div class="tab tabs">
+						<input type="radio" name="FormTypeInline" id="FormTypeInlineHTML" checked>
+						<input type="radio" name="FormTypeInline" id="FormTypeInlineCode">
+						<label for="FormTypeInlineHTML">HTML</label>
+						<label for="FormTypeInlineCode">Code</label>
+						<div class="tab">
+							<section>
+								<span>
+									<label for="FormInput1">FormInput1Label</label>
+									<input type="text" id="FormInput1" name="FormInput1">
+								</span>
+								<span>
+									<label for="FormInput2">FormInput2Label</label>
+									<input type="text" id="FormInput2" name="FormInput2">
+								</span>
+								<button>Button</button>
+							</section>
+						</div>
+						<div class="tab">
+							<code><pre>
+&lt;section&gt;
+	&lt;span&gt;
+		&lt;label for="FormInput1"&gt;FormInput1Label&lt;/label&gt;
+		&lt;input type="text" id="FormInput1" name="FormInput1"&gt;
+	&lt;/span&gt;
+	&lt;span&gt;
+		&lt;label for="FormInput2"&gt;FormInput2Label&lt;/label&gt;
+		&lt;input type="text" id="FormInput2" name="FormInput2"&gt;
+	&lt;/span&gt;
+	&lt;button&gt;Button&lt;/button&gt;
+&lt;/section&gt;
+							</pre></code>
+						</div>
+					</div>
+					<div class="tab tabs">
+						<input type="radio" name="FormTypeBlock" id="FormTypeBlockHTML" checked>
+						<input type="radio" name="FormTypeBlock" id="FormTypeBlockCode">
+						<label for="FormTypeBlockHTML">HTML</label>
+						<label for="FormTypeBlockCode">Code</label>
+						<div class="tab">
+							<section>
+								<div>
+									<label for="FormInput3">FormInput3Label</label>
+									<input type="text" id="FormInput3" name="FormInput3">
+								</div>
+								<div>
+									<label for="FormInput4">FormInput4Label</label>
+									<input type="text" id="FormInput4" name="FormInput4">
+								</div>
+								<input type="submit" value="Wprowadź">
+							</section>
+						</div>	
+						<div class="tab">
+							<code><pre>
+&lt;section&gt;
+	&lt;div&gt;
+		&lt;label for="FormInput3"&gt;FormInput3Label&lt;/label&gt;
+		&lt;input type="text" id="FormInput3" name="FormInput3"&gt;
+	&lt;/div&gt;
+	&lt;div&gt;
+		&lt;label for="FormInput4"&gt;FormInput4Label&lt;/label&gt;
+		&lt;input type="text" id="FormInput4" name="FormInput4"&gt;
+	&lt;/div&gt;
+	&lt;input type="submit" value="Wprowadź"&gt;
+&lt;/section&gt;
+							</pre></code>
+						</div>	
+					</div>
+					<div class="tab tabs">
+						<input type="radio" name="FormTypeFieldset" id="FormTypeFieldsetHTML" checked>
+						<input type="radio" name="FormTypeFieldset" id="FormTypeFieldsetCode">
+						<label for="FormTypeFieldsetHTML">HTML</label>
+						<label for="FormTypeFieldsetCode">Code</label>
+						<div class="tab">
+							<fieldset>
+								<span>
+									<label for="FormInput1">FormInput5</label>
+									<input type="text" id="FormInput5" name="FormInput5">
+								</span>
+								<span>
+									<label for="FormInput6">FormInput6</label>
+									<input type="text" id="FormInput6" name="FormInput6">
+								</span>
+								<span>
+									<label for="FormInput7">FormInput7</label>
+									<input type="text" id="FormInput7" name="FormInput7">
+								</span>
+								<button>BUTTON</button>
+							</fieldset>
+							<fieldset>
+								<button>Button1</button>
+								<button>Button2</button>
+								<button>Button3</button>
+							</fieldset>
+						</div>
+						<div class="tab">
+							<code><pre>
+&lt;fieldset&gt;
+	&lt;span&gt;
+		&lt;label for="FormInput1"&gt;FormInput5&lt;/label&gt;
+		&lt;input type="text" id="FormInput5" name="FormInput5"&gt;
+	&lt;/span&gt;
+	&lt;span&gt;
+		&lt;label for="FormInput6"&gt;FormInput6&lt;/label&gt;
+		&lt;input type="text" id="FormInput6" name="FormInput6"&gt;
+	&lt;/span&gt;
+	&lt;span&gt;
+		&lt;label for="FormInput7"&gt;FormInput7&lt;/label&gt;
+		&lt;input type="text" id="FormInput7" name="FormInput7"&gt;
+	&lt;/span&gt;
+	&lt;button&gt;BUTTON&lt;/button&gt;
+&lt;/fieldset&gt;
+&lt;fieldset&gt;
+	&lt;button&gt;Button1&lt;/button&gt;
+	&lt;button&gt;Button2&lt;/button&gt;
+	&lt;button&gt;Button3&lt;/button&gt;
+&lt;/fieldset&gt;
+							</pre></code>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 	</main>
 	<footer>
-		<span id="CurrentYear">2023</span>
-		<script type="text/javascript">
-			( function() {
-				let eCurrentYear;
-				if ( ( eCurrentYear = document.getElementById( "CurrentYear" ) ) )
-					eCurrentYear.innerHTML = new Date().getFullYear().toString();
-			}() );
-		</script>
-		&copy;
-		<a href="https://zetjot.pl">ZetJot</a>
+		<div>
+			<a href="https://zetjot.pl"><span id="CurrentYear">2023</span> &copy; ZetJot</a>
+		</div>
 	</footer>
+	<script type="text/javascript">
+		( function() {
+			let eCurrentYear;
+			if ( ( eCurrentYear = document.getElementById( "CurrentYear" ) ) )
+				eCurrentYear.innerHTML = new Date().getFullYear().toString();
+		}() );
+		function example_scheme(event) {
+			if ( event.target.tagName !== "BUTTON" )
+				return;
+			document.getElementById("Examples").className = event.target.innerHTML;
+		}
+		function example_form(event) {
+			if ( event.target.tagName !== "BUTTON" )
+				return;
+			document.querySelector("#Forms form").className = event.target.innerHTML;
+		}
+	</script>
 	<script src="/static/admin/index.js"></script>
 </body>
 </html>

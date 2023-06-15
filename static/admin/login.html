@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="theme-color" content="#F5F5DC" />
+	<meta name="description" content="Login::Templelements">
+	<title>Login::Templelements</title>
+	<link rel="stylesheet" href="/CSS/login.css">
+	<script src="/JS/templelements.js"></script>
+	<script src="/JS/templelements-form.js"></script>
+</head>
+<body>
+	<header>
+		<span>
+			<a class="symbol-back" href="javascript:history.back()"></a>
+		</span>
+		<h1>Login::Templelements</h1>
+		<span>
+			<span class="notifications-element">
+				<input type="checkbox" id="ShowNotifications" name="ShowNotifications">
+				<label for="ShowNotifications">
+					<span></span>
+				</label>
+				<div>
+					<div class="notifications-header">
+						<span>Notifications</span>
+						<button onclick="Notifications.Clear()"></button>
+					</div>
+					<div class="notifications">
+						<div class="notifiation-error">
+							<div>
+								<span></span>
+								<span>Error</span>
+								<button></button>
+							</div>
+							<p>This is an error</p>
+						</div>
+					</div>
+				</div>
+			</span>
+		</span>
+	</header>
+	<main>
+		<form class="form" onsubmit="return Templelements.Form(event, Login)">
+			<fieldset class="fieldset">
+				<div class="field">
+					<label for="Login">Login:</label>
+					<input type="text" name="Login" id="Login" minlength="3" maxlength="512">
+				</div>
+			</fieldset>
+			<fieldset class="fieldset">
+				<div class="field">
+					<label for="Password">Password:</label>
+					<input type="password" name="Password" id="Password" minlength="6" maxlength="128">
+				</div>
+			</fieldset>
+			<fieldset class="fieldset">
+				<button class="button" >Login</button>
+			</fieldset>
+		</form>
+	</main>
+	<footer>
+		<span class="version">
+			v:1.0.0
+			<br>
+			Created by <a href="https://github.com/ZJ_tja">ZJ_tja</a>
+		</span>
+		<div class="copyright">
+			Templelements © 2023
+		</div>
+		<span class="preferences">
+			<span>Language</span>
+			<span>Cookies</span>
+			<span>Preferences</span>
+		</span>
+	</footer>
+</body>
+</html>

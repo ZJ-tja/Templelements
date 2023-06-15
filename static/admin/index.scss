@@ -2,3 +2,31 @@
 @import "../../../SCSS/default-content.scss";
 @import "../../../SCSS/default-forms.scss";
 @import "../../../SCSS/default-scrolls.scss";
+
+@import "../../../SCSS/colour/scheme-1.scss";
+@import "../../../SCSS/colour/scheme-2.scss";
+@import "../../../SCSS/colour/scroll-1.scss";
+
+@import "../../../SCSS/layout/column-doublesticky.scss";
+@import "../../../SCSS/layout/header/brand-nav-icons.scss";
+@import "../../../SCSS/layout/main/block.scss";
+@import "../../../SCSS/layout/footer/copy-preferences.scss";
+
+@import "../../../SCSS/element/tabs.scss";
+
+:root {
+	--font-size: #{$FontSize};
+	@include scheme-1;
+	@include scroll-1;
+}
+#Schemes {
+	position:sticky;
+	top:0px;
+}
+.scheme-1 {
+	@include scheme-1;
+}
+
+.scheme-2 {
+	@include scheme-2;
+}

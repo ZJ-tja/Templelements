@@ -1,7 +1,9 @@
-var re_email = new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', 'g');
-var re_password = new RegExp('^[\\S ]{8,128}$', 'g');
-module.exports = function (db, io) {
-    var Account = {
+var regexp = {
+    email: new RegExp('^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$', 'g'),
+    password: new RegExp('^[\\S ]{8,128}$', 'g'),
+};
+module.exports = function (DB, IO) {
+    return {
         Login: function (client, username, password) {
             return true;
         },
@@ -22,5 +24,4 @@ module.exports = function (db, io) {
             return true;
         }
     };
-    return Account;
 };

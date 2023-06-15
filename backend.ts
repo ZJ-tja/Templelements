@@ -1,22 +1,38 @@
-import fastify from "fastify";
-import fastifyIO from "fastify-socket.io";
-import { readFileSync } from "fs";
-import { Client } from 'pg'
-const pg = new Client( process.env.PORT ? {
-	host: "dpg-chsqmaik728ud3kthlm0-a",
-	database: "db_templelements",
-	user: "templelements",
-	password: "MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT",
-} : {
-	user: "postgres",
-	database: "templelements",
-	password: "1234"
-});
+import { existsSync, readFileSync } from "fs";
+import { createServer } from "https";
+import { Server } from "socket.io";
+import { Client } from "pg";
 
-const server = fastify( {
-	https: process.env.PORT ? null : {
-		// LOCALHOST CERTS
-		key: `-----BEGIN PRIVATE KEY-----
+const DB = (new Client( {
+	connectionString: process.env.PORT ? "postgres://templelements:MRlLiHggR8kr9PMncJ4O7ps4xJAKNmYT@dpg-chsqmaik728ud3kthlm0-a/db_templelements" : "postgres://postgres:1234@localhost:5432/templelements",
+} ) ).connect( error => {
+	if ( error ) {
+		console.error( error );
+		return process.exit();
+	}
+	console.log( "OK<--DATABASE<--CONNECTED" );
+} );
+
+const URLs = {
+	"/": {}
+};
+const MIMEs = {
+	".html": "text/html",
+	".css": "text/css",
+	".js": "application/javascript",
+	".png": "image/png",
+	".jpg": "image/jpeg",
+	".jpeg": "image/jpeg",
+	".gif": "image/gif",
+	".svg": "image/svg+xml",
+	".ico": "image/x-icon",
+	".webmanifest": "application/manifest+json"
+};
+const DIR_STATIC = "static";
+
+const HTTPS = createServer( process.env.PORT ? null : {
+	// LOCALHOST CERTS
+	key: `-----BEGIN PRIVATE KEY-----
 MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC1lcNiRny+HuHv
 4Hkij+4WRMgo36Uygu1HQLqWe6/xRo8Q4X6ioTszUwTURDV2ctmAb2pIf4yjYfgd
 bOwl3XBRqZUzwrat1YGzQk/YdHoZ0LSwjqnyuP9oFizJ/1VpM0IHfQiqsj6xnsAz
@@ -43,9 +59,8 @@ S2blPLP/cEXJSp5XAY7tEhrbpy8wYC+0bzeUZahzLEcQq0WIyKKu2o2IO81vRe1A
 kWyqk7ROQRiC5lNwrGJkh5yumIM47rxY/bdE5T4nT/eihIIi9HUNezqK81W+VJOx
 EXodPsPLnC6oMc2aPAxK8VgfSy5I9/8zXYOTw/jyj9v05JQQwc27RaqwtAXX3Ev8
 CBQApzrabsCJxKYDWG94JQ==
------END PRIVATE KEY-----
-		`,
-		cert: `-----BEGIN CERTIFICATE-----
+-----END PRIVATE KEY-----`,
+	cert: `-----BEGIN CERTIFICATE-----
 MIIDqjCCApKgAwIBAgIUEp8a0EtAu/yGW9wQzvgjwDAlHqkwDQYJKoZIhvcNAQEL
 BQAwUzELMAkGA1UEBhMCUEwxFTATBgNVBAcMDERlZmF1bHQgQ2l0eTEcMBoGA1UE
 CgwTRGVmYXVsdCBDb21wYW55IEx0ZDEPMA0GA1UEAwwGWkpfdGphMB4XDTIzMDEx
@@ -66,90 +81,79 @@ mWyHO6uZQ4RWzfuwJoqIdQEBKgxflrE/3ovqbryylp1SwsbBnTI3Nwogk9czeLUS
 9JGiKRddUk2NCZLgnDhDH8jK3W02waUP2K7U25cdEWD0LWIx2oTLPMWrNM0AblZr
 Z96ky2Tpgli5UylFicaQ3j6nzRcd9C4y4klT65lpBFZ4vKCjHYQ4Z6hhPD3GG7IV
 +0TxKfmqX8rBgy93+7stdnFfbzxgE1wm76XlX2xj
------END CERTIFICATE-----
-		`
+-----END CERTIFICATE-----`
+}, ( req, res ) => {
+	if ( URLs.hasOwnProperty( req.url ) )
+		return RequestTemplelement( req.url, res );
+
+	try {
+		console.log( "STATIC: " + req.url );
+		let type = "application/octet-stream", ext;
+
+		if ( req.url.lastIndexOf( "." ) !== -1 && MIMEs.hasOwnProperty( ( ext = req.url.substring( req.url.lastIndexOf( "." ) ) ) ) )
+			type = MIMEs[ ext ];
+
+		res.writeHead( 200, { "Content-Type": type } );
+		res.write( readFileSync( DIR_STATIC + req.url ) );
+		return res.end();
+	} catch {
+		return RequestNotFound( req.url, res );
 	}
 } );
+HTTPS.requestTimeout = 60000;
+HTTPS.maxHeadersCount = 100;
 
-server.register( fastifyIO, {
-	transports: [ 'websocket' ],
-	serveClient: false,
-	cors: {
-		origin: process.env.PORT ? "https://templelements.onrender.com/" : "https://localhost/"
-	}
-} );
-
-
-server.setNotFoundHandler( ( req, res ) => {
-	res.statusCode = 404;
-	res.type( 'text/html' ).send();
-} );
-
-const mime_types: { [ ext: string ]: string } = {
-	".js": "application/javascript",
-	".css": "text/css",
-	".html": "text/html",
-	".png": "image/png",
-	".webp": "image/webp",
-	".svg": "image/svg+xml",
-	".ico": "image/x-icon",
-	".webmanifest": "application/json"
-};
-
-var Langs = {};
-
-const Paths = {
-	"": {}
+function RequestNotFound( url, res ) {
+	res.writeHead( 404 );
+	return res.end( '<h1>404</h1><h2>Not Found</h2><p>' + url + '</p>' );
 }
 
-server.get( "/*", ( req, res ) => {
-	let params = "params" in req ? req.params as object : {}
-	try {
-		let fulluri = params[ "*" ] as string,
-			parts = fulluri.split( "/" );
-		if ( parts[0] == "static" ) {
-			let ext = fulluri.substring( fulluri.lastIndexOf( "." ) ),
-				file = readFileSync( fulluri ),
-				type = ext in mime_types ? mime_types[ ext ] : "application/octet-stream";
-			res.header( "Content-Type", type ).send( file );
-		} else if ( parts[0] == "templelements") {
-			res.header( "Content-Type", "text/html" ).send( readFileSync( "admin.html" ) );
-		} else {
-			res.header( "Content-Type", "text/html" ).send( readFileSync( "admin.html" ) );
-			return;
-			let lang = parts[0] in Langs ? parts[0] : "en",
-				step = 1,
-				steps = parts.length,
-				tree: any = Paths;
-			for ( ; step < steps; step++ )
-				tree = tree[ parts[ step ] ];
+function RequestTemplelement( url, res ) {
+	console.log("Templelemnts: " + url);
+}
 
-			switch( tree.type ) {
-				case "static_cached": break;
-			}
-		}
-	} catch {}
-	res.callNotFound();
-});
-
-
-server.ready().then( async () => {
-	await pg.connect();
-	const Account = require( "./server_modules/account.js" )( pg, server.io );
-	// const Notifications = require( "./server_modules/notifications.js" );
-	server.io.on( "connection", ( client: any ) => {
-		let account = {
-			id: 0,
-		}
-		client.on( "Account:Login", Account.Login.bind( client ) );
-
-		client.on( "GetPaths", () => {
-			client.emit( "GetPaths", Paths );
-		} );
-	} );
+const IO = new Server( HTTPS, {
+	transports: ['websocket']
 } );
 
-const port = ( process.env.PORT || 443 ) as number;
-server.listen( { port: port }, () => {
-	console.log( "Server listening on port " + port );
+const History = {
+	Count: 15,
+	List: [],
+	Add: ( text: string, options: object = null ) => {
+		let log = {
+			text: text,
+		}
+		if ( options )
+			log = Object.assign( log, options );
+
+		let size = History.List.unshift( log );
+		if ( size > History.Count )
+			History.List.pop();
+	}
+}
+
+// const Account = require( "./server_modules/account.js" )( DB, IO );
+
+IO.on( "connection", ( client: any ) => {
+	console.log( "OK<--IO<--CONNECTION" );
+	let account = {
+		id: 0,
+	}
+	// client.on( "Account:Login", Account.Login.bind( client ) );
+
+	client.on( "disconnecting", () => {
+		console.log( "OK<--IO<--DISCONNECTING" );
 } );
+
+} );
+
+HTTPS.listen( process.env.PORT || 443, () => {
+	console.log( "OK<--SERVER<--LISTENING" );
+} );
+
+
+process.stdout.on( "data", data => {
+	History.Add( data.toString() );
+} );
+
+

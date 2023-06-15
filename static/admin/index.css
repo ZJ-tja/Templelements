@@ -6,6 +6,23 @@ body {
   margin: 0;
 }
 
+span, img, a {
+  display: inline-block;
+}
+
+menu {
+  -webkit-margin-before: unset;
+          margin-block-start: unset;
+  -webkit-margin-after: unset;
+          margin-block-end: unset;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+  letter-spacing: -0.25px;
+}
+
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   margin-top: 0.67em;
   margin-bottom: 0.67em;
@@ -13,37 +30,113 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 h1, .h1 {
-  font-size: 3em;
+  font-size: calc(var(--font-size) * 4.5);
 }
 
 h2, .h2 {
-  font-size: 2.5em;
+  font-size: calc(var(--font-size) * 3);
 }
 
 h3, .h3 {
-  font-size: 2em;
+  font-size: calc(var(--font-size) * 2.2);
 }
 
 h4, .h4 {
-  font-size: 1.6em;
+  font-size: calc(var(--font-size) * 1.5);
 }
 
 h5, .h5 {
-  font-size: 1.3em;
+  font-size: calc(var(--font-size) * 1.3);
 }
 
 h6, .h6 {
-  font-size: 1.1em;
+  font-size: calc(var(--font-size) * 1.1);
 }
 
 p {
-  font-weight: 500;
   line-height: 1.5em;
   letter-spacing: 1px;
 }
 
-textarea, input, select {
+form {
+  display: inline-block;
+  margin: 0 auto;
+  background-color: var(--secondary-bg);
+  color: var(--secondary-txt);
+}
+
+form section, form fieldset {
+  font-size: 0;
+}
+
+form section > span, section > div, form fieldset > span {
+  padding: calc(var(--font-size) * 0.25);
+  border-radius: calc(var(--font-size) * 0.4);
+  box-shadow: 0 0 calc(var(--font-size) * 0.125) 0 var(--primary-border);
+  background-color: var(--primary-bg);
+  color: var(--primary-txt);
+}
+
+form section label,
+form fieldset label {
+  display: block;
+  color: var(--secondary-txt);
+  font-size: calc(var(--font-size) * 1.1);
+  cursor: text;
+}
+
+form section input, form section select, form section textarea, form fieldset input, form fieldset select, form fieldset textarea {
+  display: block;
+  padding: 0.75em;
+  width: 100%;
+  border: unset;
   box-sizing: border-box;
+  box-shadow: 0 -0.25em 0 -0.125em var(--primary-txt) inset;
+  background: unset;
+  font-size: var(--font-size);
+}
+
+form button {
+  padding: 0.75em;
+  box-sizing: border-box;
+  box-shadow: 0 -0.25em 0 -0.125em var(--primary-border) inset;
+  border-radius: calc(var(--font-size) * 0.25);
+  border: unset;
+  background-color: var(--tetriary-bg);
+  color: var(--tetriary-txt);
+  font-weight: bold;
+  font-size: var(--font-size);
+  cursor: pointer;
+}
+
+form [type=submit] {
+  border-radius: calc(var(--font-size) * 0.25);
+  background-color: var(--tetriary-bg);
+  color: var(--tetriary-txt);
+  font-weight: bold;
+  cursor: pointer;
+}
+
+form fieldset {
+  -webkit-margin-start: unset;
+          margin-inline-start: unset;
+  -webkit-margin-end: unset;
+          margin-inline-end: unset;
+  -webkit-padding-start: unset;
+          padding-inline-start: unset;
+  -webkit-padding-end: unset;
+          padding-inline-end: unset;
+  -webkit-padding-before: unset;
+          padding-block-start: unset;
+  -webkit-padding-after: unset;
+          padding-block-end: unset;
+  border: unset;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+form fieldset span, form fieldset button {
+  flex: 1;
 }
 
 ::-webkit-scrollbar {
@@ -52,11 +145,163 @@ textarea, input, select {
 }
 
 ::-webkit-scrollbar-track {
-  background: #ccc;
+  background: var(--scroll-bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #aaa;
+  background: var(--scroll-thumb);
   cursor: pointer;
   border-radius: 6px;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 100vw;
+  grid-template-rows: min-content auto min-content;
+  grid-auto-rows: 0px;
+}
+
+body > header {
+  grid-row: 1;
+}
+
+body > main {
+  grid-row: 2;
+  overflow-y: auto;
+}
+
+body > footer {
+  grid-row: 3;
+}
+
+body > header {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: var(--primary-bg);
+  color: var(--primary-txt);
+}
+
+body > header > a {
+  order: 1;
+}
+
+body > header > span {
+  order: 2;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+body > header > nav {
+  order: 3;
+  width: 100%;
+}
+
+@media (min-width: 600px) {
+  body > header {
+    flex-wrap: nowrap;
+  }
+  body > header > nav {
+    order: 2;
+    width: auto;
+    display: inline-block;
+    overflow-x: auto;
+  }
+  body > header > span {
+    order: 3;
+  }
+}
+body > main {
+  background-color: var(--secondary-bg);
+  color: var(--secondary-txt);
+}
+
+body > footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: var(--primary-bg);
+  color: var(--primary-txt);
+}
+
+body > footer > .copy {
+  font-size: 0.75em;
+}
+
+body > footer > .preferences {
+  display: inline-flex;
+  align-items: center;
+}
+
+.tabs {
+  font-size: 0;
+}
+.tabs > input {
+  position: absolute;
+  left: -200vw;
+}
+.tabs > label {
+  display: inline-block;
+  padding: 0.75em;
+  box-sizing: border-box;
+  box-shadow: 0 -0.25em 0 -0.125em var(--primary-border) inset;
+  border-radius: calc(var(--font-size) * 0.25);
+  border: unset;
+  background-color: var(--tetriary-bg);
+  color: var(--tetriary-txt);
+  font-weight: bold;
+  font-size: var(--font-size);
+  cursor: pointer;
+}
+.tabs > div {
+  display: none;
+  flex-basis: 100%;
+}
+.tabs > input:nth-of-type(1):checked ~ .tab:nth-of-type(1), .tabs > input:nth-of-type(2):checked ~ .tab:nth-of-type(2), .tabs > input:nth-of-type(3):checked ~ .tab:nth-of-type(3), .tabs > input:nth-of-type(4):checked ~ .tab:nth-of-type(4), .tabs > input:nth-of-type(5):checked ~ .tab:nth-of-type(5), .tabs > input:nth-of-type(6):checked ~ .tab:nth-of-type(6), .tabs > input:nth-of-type(7):checked ~ .tab:nth-of-type(7), .tabs > input:nth-of-type(8):checked ~ .tab:nth-of-type(8), .tabs > input:nth-of-type(9):checked ~ .tab:nth-of-type(9) {
+  display: block;
+}
+
+:root {
+  --font-size: 16px;
+  --primary-bg: #FFFFFF;
+  --primary-txt: #3D0FA5;
+  --primary-border: #E0E0E0;
+  --secondary-bg: #F8F8F8;
+  --secondary-txt: #26232c;
+  --secondary-border: #26232c;
+  --tetriary-bg: #0071C5;
+  --tetriary-txt: #FFFFFF;
+  --tetriary-border: #19C6FF;
+  --scroll-bg: #D0D0D0;
+  --scroll-thumb: #666970;
+}
+
+#Schemes {
+  position: sticky;
+  top: 0px;
+}
+
+.scheme-1 {
+  --primary-bg: #FFFFFF;
+  --primary-txt: #3D0FA5;
+  --primary-border: #E0E0E0;
+  --secondary-bg: #F8F8F8;
+  --secondary-txt: #26232c;
+  --secondary-border: #26232c;
+  --tetriary-bg: #0071C5;
+  --tetriary-txt: #FFFFFF;
+  --tetriary-border: #19C6FF;
+}
+
+.scheme-2 {
+  --primary-bg: #26232c;
+  --primary-txt: #666970;
+  --secondary-bg: #F3C016;
+  --secondary-txt: #FFFFFF;
+  --tetriary-bg: #1E1F20;
+  --tetriary-txt: #E7E6E9;
 }

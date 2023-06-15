@@ -1,0 +1,22 @@
+@import "../../../SCSS/default-settings.scss";
+
+@import "../../../SCSS/color/palette1.scss";
+@import "../../../SCSS/color/scroll1.scss";
+
+:root {
+	--font-size: #{$FontSize};
+	@include palette1;
+	@include scroll1;
+}
+
+@import "../../../SCSS/layout/sticky-grid.scss";
+@import "../../../SCSS/layout/header/fr-center-fr/padding-s-m.scss";
+@import "../../../SCSS/layout/main/centered/padding-m.scss";
+@import "../../../SCSS/layout/footer/fr-center-fr/padding-m.scss";
+
+@import "../../../SCSS/element/notifications.scss";
+@import "../../../SCSS/element/form.scss";
+@import "../../../SCSS/element/button.scss";
+@import "../../../SCSS/element/scroll.scss";
+
+@import "../../../SCSS/symbol/back.scss";
